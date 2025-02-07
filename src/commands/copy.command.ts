@@ -31,7 +31,7 @@ export class Copy {
     return isJsonFile;
   }
 
-  register() {
+  register(type: 'default' | '1' | '2' | '3') {
     if (!this.canExecuteCommand()) {
       return;
     }
@@ -45,7 +45,8 @@ export class Copy {
     const includeFileName = configuration.get<boolean>('includeFileName');
     const useBracketNotation = configuration.get<boolean>('useBracketNotation');
     const quote = configuration.get<String>('quote');
-    const pathOutput = configuration.get<string>('output') ?? '%PATH%';
+    const pathOutput =
+      configuration.get<string>(`outputTemplate${type}`) ?? '%PATH%';
 
     this.loggerService.debug(`PathOutput: ${pathOutput}`);
 
@@ -61,117 +62,9 @@ export class Copy {
 
       env.clipboard
         .writeText(path)
-        .then(() => this.loggerService.log('Path copied'));
+        .then(() => this.loggerService.log('路径复制成功'));
     } else {
-      this.loggerService.error('Fail to copy path');
-    }
-  }
-
-  registerFormatted1() {
-    if (!this.canExecuteCommand()) {
-      return;
-    }
-
-    const editor = window.activeTextEditor;
-    const text = editor?.document.getText();
-    const offset = editor?.document.offsetAt(editor?.selection.start);
-
-    const configuration = workspace.getConfiguration('json.copyJsonPath');
-
-    const includeFileName = configuration.get<boolean>('includeFileName');
-    const useBracketNotation = configuration.get<boolean>('useBracketNotation');
-    const quote = configuration.get<String>('quote');
-    const pathOutput = configuration.get<string>('output') ?? '%PATH%';
-
-    this.loggerService.debug(`PathOutput: ${pathOutput}`);
-
-    if (offset && text) {
-      const rawPath: string = getJsonPath(text, offset, editor, {
-        includeFileName,
-        useBracketNotation,
-        quote,
-      });
-      this.loggerService.debug(`Raw path: ${rawPath}`);
-
-      const formattedPath = `() => this.$t('${rawPath}')`;
-
-      env.clipboard
-        .writeText(formattedPath)
-        .then(() => this.loggerService.log('Formatted Path 1 copied'));
-    } else {
-      this.loggerService.error('Fail to copy path');
-    }
-  }
-
-  registerFormatted2() {
-    if (!this.canExecuteCommand()) {
-      return;
-    }
-
-    const editor = window.activeTextEditor;
-    const text = editor?.document.getText();
-    const offset = editor?.document.offsetAt(editor?.selection.start);
-
-    const configuration = workspace.getConfiguration('json.copyJsonPath');
-
-    const includeFileName = configuration.get<boolean>('includeFileName');
-    const useBracketNotation = configuration.get<boolean>('useBracketNotation');
-    const quote = configuration.get<String>('quote');
-    const pathOutput = configuration.get<string>('output') ?? '%PATH%';
-
-    this.loggerService.debug(`PathOutput: ${pathOutput}`);
-
-    if (offset && text) {
-      const rawPath: string = getJsonPath(text, offset, editor, {
-        includeFileName,
-        useBracketNotation,
-        quote,
-      });
-      this.loggerService.debug(`Raw path: ${rawPath}`);
-
-      const formattedPath = `{{ $t("${rawPath}") }}`;
-
-      env.clipboard
-        .writeText(formattedPath)
-        .then(() => this.loggerService.log('Formatted Path 2 copied'));
-    } else {
-      this.loggerService.error('Fail to copy path');
-    }
-  }
-
-  registerFormatted3() {
-    if (!this.canExecuteCommand()) {
-      return;
-    }
-
-    const editor = window.activeTextEditor;
-    const text = editor?.document.getText();
-    const offset = editor?.document.offsetAt(editor?.selection.start);
-
-    const configuration = workspace.getConfiguration('json.copyJsonPath');
-
-    const includeFileName = configuration.get<boolean>('includeFileName');
-    const useBracketNotation = configuration.get<boolean>('useBracketNotation');
-    const quote = configuration.get<String>('quote');
-    const pathOutput = configuration.get<string>('output') ?? '%PATH%';
-
-    this.loggerService.debug(`PathOutput: ${pathOutput}`);
-
-    if (offset && text) {
-      const rawPath: string = getJsonPath(text, offset, editor, {
-        includeFileName,
-        useBracketNotation,
-        quote,
-      });
-      this.loggerService.debug(`Raw path: ${rawPath}`);
-
-      const formattedPath = `$t('${rawPath}')`;
-
-      env.clipboard
-        .writeText(formattedPath)
-        .then(() => this.loggerService.log('Formatted Path 3 copied'));
-    } else {
-      this.loggerService.error('Fail to copy path');
+      this.loggerService.error('路径复制失败');
     }
   }
 }

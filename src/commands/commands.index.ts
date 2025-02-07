@@ -7,7 +7,7 @@ export const registerCommands = (): Disposable[] => {
 
   return [
     commands.registerCommand(Copy.name, () =>
-      new Copy(loggerService).register(),
+      new Copy(loggerService).register('default'),
     ),
   ];
 };

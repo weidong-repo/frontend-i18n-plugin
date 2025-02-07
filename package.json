@@ -1,13 +1,13 @@
 {
-  "name": "copy-json-path",
-  "publisher": "Malo",
-  "displayName": "Copy Json Path",
-  "description": "This extension allows you to copy and paste a jsonpath",
+  "name": "frontend-i18n-plugin",
+  "publisher": "zhao",
+  "displayName": "前端国际化插件",
+  "description": "基于copy-json-path插件二开的前端国际化插件",
   "icon": "assets/logo.png",
   "repository": {
     "url": "https://github.com/MaloPolese/copy-json-path/tree/main"
   },
-  "version": "1.4.0",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.58.0"
   },
@@ -18,7 +18,10 @@
     "onCommand:copy-json-path.copy",
     "onCommand:copy-json-path.copy-formatted-1",
     "onCommand:copy-json-path.copy-formatted-2",
-    "onCommand:copy-json-path.copy-formatted-3"
+    "onCommand:copy-json-path.copy-formatted-3",
+    "onCommand:copy-json-path.replace-i18n-1",
+    "onCommand:copy-json-path.replace-i18n-2",
+    "onCommand:copy-json-path.replace-i18n-3"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -41,6 +44,21 @@
       {
         "command": "copy-json-path.copy-formatted-3",
         "title": "复制方式3",
+        "group": "myGroup@1"
+      },
+      {
+        "command": "copy-json-path.replace-i18n-1",
+        "title": "替换为国际化路径(方式1)",
+        "group": "myGroup@1"
+      },
+      {
+        "command": "copy-json-path.replace-i18n-2",
+        "title": "替换为国际化路径(方式2)",
+        "group": "myGroup@1"
+      },
+      {
+        "command": "copy-json-path.replace-i18n-3",
+        "title": "替换为国际化路径(方式3)",
         "group": "myGroup@1"
       }
     ],
@@ -80,10 +98,70 @@
             "Use double quote"
           ]
         },
-        "json.copyJsonPath.output": {
+        "json.copyJsonPath.outputTemplateDefault": {
           "type": "string",
           "default": "%PATH%",
-          "description": "Control the output of the path. %PATH% will be replaced by the path. You can add text before and after the path."
+          "description": "默认复制方式的复制内容，%PATH%将被路径替换。可以在路径前后添加文本。"
+        },
+        "json.copyJsonPath.outputTemplate1": {
+          "type": "string",
+          "default": "%PATH%",
+          "description": "json路径复制 方式一 的复制内容，%PATH%将被路径替换。可以在路径前后添加文本。"
+        },
+        "json.copyJsonPath.outputTemplate2": {
+          "type": "string",
+          "default": "%PATH%",
+          "description": "json路径复制 方式二 的复制内容，%PATH%将被路径替换。可以在路径前后添加文本。"
+        },
+        "json.copyJsonPath.outputTemplate3": {
+          "type": "string",
+          "default": "%PATH%",
+          "description": "json路径复制 方式三 的复制内容，%PATH%将被路径替换。可以在路径前后添加文本。"
+        },
+        "json.copyJsonPath.i18nPrimaryPath": {
+          "type": "string",
+          "default": "",
+          "description": "国际化的json文件路径（优先级最高，先从这里找）"
+        },
+        "json.copyJsonPath.i18nSecondaryPath": {
+          "type": "string",
+          "default": "",
+          "description": "国际化的json文件路径（优先级次高，第一处没有后再在此处搜索）"
+        },
+        "json.copyJsonPath.format1Template": {
+          "type": "string",
+          "default": "t('%PATH%')",
+          "description": "选中内容替换为国际化路径(方式1)的内容，%PATH%将被路径替换。可以在路径前后添加文本。"
+        },
+        "json.copyJsonPath.format2Template": {
+          "type": "string",
+          "default": "{{t('%PATH%')}}",
+          "description": "选中内容替换为国际化路径(方式2)的内容，%PATH%将被路径替换。可以在路径前后添加文本。"
+        },
+        "json.copyJsonPath.format3Template": {
+          "type": "string",
+          "default": "$t('%PATH%')",
+          "description": "选中内容替换为国际化路径(方式3)的内容，%PATH%将被路径替换。可以在路径前后添加文本。"
+        },
+        "json.copyJsonPath.i18nFallbackFilePath": {
+          "type": "string",
+          "default": "",
+          "description": "填入文件路径，当在上述两个文件中无法匹配时，在这个文件中添加翻译匹配词"
+        },
+        "json.copyJsonPath.i18nFallbackPath": {
+          "type": "string",
+          "default": "",
+          "description": "文件添加匹配词路径，比如要是找不到，就在json文件common.main下新增对应的词"
+        },
+        "json.copyJsonPath.sparkApiPassword": {
+          "type": "string",
+          "default": "",
+          "description": "星火大模型的 API Password"
+        },
+        "json.copyJsonPath.sparkPrompt": {
+          "type": "string",
+          "default": "帮我进行变量命名\"%TEXT%\"，使用英译驼峰命名法，你的返回结果只需要给我驼峰命名法的变量名即可，不需要任何多余格式，要求变量名精简，见名知意。",
+          "description": "发送给星火大模型的提示词，%TEXT%将被替换为选中的文本"
         }
       }
     },
@@ -128,6 +206,21 @@
           "when": "resourceLangId == jsonc",
           "command": "copy-json-path.copy-formatted-3",
           "group": "copyPath"
+        },
+        {
+          "command": "copy-json-path.replace-i18n-1",
+          "group": "i18n@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "copy-json-path.replace-i18n-2",
+          "group": "i18n@2",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "copy-json-path.replace-i18n-3",
+          "group": "i18n@3",
+          "when": "editorHasSelection"
         }
       ]
     }
@@ -158,6 +251,8 @@
     "@types/mocha": "^8.2.2",
     "@types/node": "14.x",
     "@types/vscode": "^1.58.0",
+    "@types/ws": "^8.5.14",
+    "@types/node-fetch": "^2.6.11",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "eslint": "^7.27.0",
@@ -174,6 +269,8 @@
   },
   "dependencies": {
     "jsonc-parser": "^3.0.0",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "ws": "^8.18.0",
+    "node-fetch": "^2.7.0"
   }
 }
