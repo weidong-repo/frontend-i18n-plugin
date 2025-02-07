@@ -9,9 +9,9 @@ export class I18nHandler {
       const absolutePath = path.isAbsolute(filePath)
         ? filePath
         : path.join(
-            vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '',
-            filePath,
-          );
+          vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '',
+          filePath,
+        );
 
       if (!fs.existsSync(absolutePath)) {
         throw new Error(`找不到文件: ${absolutePath}`);
@@ -114,7 +114,7 @@ export class I18nHandler {
       const handler = new I18nHandler();
       const config = vscode.workspace.getConfiguration('json.copyJsonPath');
       const templateKey = `format${formatNumber}Template`;
-      const template = config.get<string>(templateKey) || "t('%PATH%')";
+      const template = config.get<string>(templateKey) || "t('${PATH}')";
 
       // 使用 findAndReplaceText 来处理查找和添加新词的逻辑
       const replacement = await handler.findAndReplaceText(
@@ -274,13 +274,13 @@ export class I18nHandler {
     const existingPath = await I18nHandler.searchInFiles(selectedText);
 
     if (existingPath) {
-      return formatTemplate.replace('%PATH%', existingPath);
+      return formatTemplate.replace('${PATH}', existingPath);
     }
 
     // 如果没找到，则调用新方法处理
     const newPath = await this.handleUnmatchedText(selectedText);
     if (newPath) {
-      return formatTemplate.replace('%PATH%', newPath);
+      return formatTemplate.replace('${PATH}', newPath);
     }
 
     return undefined;

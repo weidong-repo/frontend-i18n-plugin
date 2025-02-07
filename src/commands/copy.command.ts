@@ -46,7 +46,7 @@ export class Copy {
     const useBracketNotation = configuration.get<boolean>('useBracketNotation');
     const quote = configuration.get<String>('quote');
     const pathOutput =
-      configuration.get<string>(`outputTemplate${type}`) ?? '%PATH%';
+      configuration.get<string>(`outputTemplate${type}`) ?? '${PATH}';
 
     this.loggerService.debug(`PathOutput: ${pathOutput}`);
 
@@ -58,7 +58,7 @@ export class Copy {
       });
       this.loggerService.debug(`Raw path: ${rawPath}`);
 
-      const path = pathOutput.replace('%PATH%', rawPath);
+      const path = pathOutput.replace('${PATH}', rawPath);
 
       env.clipboard
         .writeText(path)

@@ -21,7 +21,7 @@ export class SparkApi {
           messages: [
             {
               role: 'user',
-              content: prompt.replace('%TEXT%', text),
+              content: prompt.replace('${TEXT}', text),
             },
           ],
           temperature: 0.5,
