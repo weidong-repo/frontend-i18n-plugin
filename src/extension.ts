@@ -44,4 +44,4 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(...disposables);
 }
 
-export function deactivate() {}
+export function deactivate() { }
