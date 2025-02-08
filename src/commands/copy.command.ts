@@ -31,6 +31,20 @@ export class Copy {
     return isJsonFile;
   }
 
+  private getTemplate(type: string): string {
+    const config = workspace.getConfiguration('frontend-i18n');
+    switch (type) {
+      case '1':
+        return config.get<string>('outputTemplate1') || '${PATH}';
+      case '2':
+        return config.get<string>('outputTemplate2') || '${PATH}';
+      case '3':
+        return config.get<string>('outputTemplate3') || '${PATH}';
+      default:
+        return config.get<string>('outputTemplateDefault') || '${PATH}';
+    }
+  }
+
   register(type: 'default' | '1' | '2' | '3') {
     if (!this.canExecuteCommand()) {
       return;
@@ -39,23 +53,12 @@ export class Copy {
     const editor = window.activeTextEditor;
     const text = editor?.document.getText();
     const offset = editor?.document.offsetAt(editor?.selection.start);
-
-    const configuration = workspace.getConfiguration('json.copyJsonPath');
-
-    const includeFileName = configuration.get<boolean>('includeFileName');
-    const useBracketNotation = configuration.get<boolean>('useBracketNotation');
-    const quote = configuration.get<String>('quote');
-    const pathOutput =
-      configuration.get<string>(`outputTemplate${type}`) ?? '${PATH}';
+    const pathOutput = this.getTemplate(type);
 
     this.loggerService.debug(`PathOutput: ${pathOutput}`);
 
     if (offset && text) {
-      const rawPath: string = getJsonPath(text, offset, editor, {
-        includeFileName,
-        useBracketNotation,
-        quote,
-      });
+      const rawPath: string = getJsonPath(text, offset, editor);
       this.loggerService.debug(`Raw path: ${rawPath}`);
 
       const path = pathOutput.replace('${PATH}', rawPath);

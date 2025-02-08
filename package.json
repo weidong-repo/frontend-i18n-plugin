@@ -2,12 +2,12 @@
   "name": "frontend-i18n-plugin",
   "publisher": "zhao",
   "displayName": "前端国际化插件",
-  "description": "基于copy-json-path插件二开的前端国际化插件",
+  "description": "前端国际化辅助快捷插件-基于copy-json-path插件二开",
   "icon": "assets/logo.png",
   "repository": {
-    "url": "https://github.com/MaloPolese/copy-json-path/tree/main"
+    "url": "https://github.com/weidong-repo/frontend-i18n-plugin"
   },
-  "version": "1.1.0",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.58.0"
   },
@@ -15,56 +15,56 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:copy-json-path.copy",
-    "onCommand:copy-json-path.copy-formatted-1",
-    "onCommand:copy-json-path.copy-formatted-2",
-    "onCommand:copy-json-path.copy-formatted-3",
-    "onCommand:copy-json-path.replace-i18n-1",
-    "onCommand:copy-json-path.replace-i18n-2",
-    "onCommand:copy-json-path.replace-i18n-3"
+    "onCommand:frontend-i18n.copy",
+    "onCommand:frontend-i18n.copy-formatted-1",
+    "onCommand:frontend-i18n.copy-formatted-2",
+    "onCommand:frontend-i18n.copy-formatted-3",
+    "onCommand:frontend-i18n.replace-i18n-1",
+    "onCommand:frontend-i18n.replace-i18n-2",
+    "onCommand:frontend-i18n.replace-i18n-3"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "copy-json-path.copy",
-        "title": "%vscode-jsonpath.commands.copy%",
+        "command": "frontend-i18n.copy",
+        "title": "快捷复制json路径",
         "group": "myGroup@1"
       },
       {
-        "command": "copy-json-path.copy-formatted-1",
-        "title": "复制方式1",
+        "command": "frontend-i18n.copy-formatted-1",
+        "title": "快捷复制json路径-模板1",
         "group": "myGroup@1"
       },
       {
-        "command": "copy-json-path.copy-formatted-2",
-        "title": "复制方式2",
+        "command": "frontend-i18n.copy-formatted-2",
+        "title": "快捷复制json路径-模板2",
         "group": "myGroup@1"
       },
       {
-        "command": "copy-json-path.copy-formatted-3",
-        "title": "复制方式3",
+        "command": "frontend-i18n.copy-formatted-3",
+        "title": "快捷复制json路径-模板3",
         "group": "myGroup@1"
       },
       {
-        "command": "copy-json-path.replace-i18n-1",
+        "command": "frontend-i18n.replace-i18n-1",
         "title": "替换为国际化路径(方式1)",
         "group": "myGroup@1"
       },
       {
-        "command": "copy-json-path.replace-i18n-2",
+        "command": "frontend-i18n.replace-i18n-2",
         "title": "替换为国际化路径(方式2)",
         "group": "myGroup@1"
       },
       {
-        "command": "copy-json-path.replace-i18n-3",
+        "command": "frontend-i18n.replace-i18n-3",
         "title": "替换为国际化路径(方式3)",
         "group": "myGroup@1"
       }
     ],
     "keybindings": [
       {
-        "command": "copy-json-path.copy",
+        "command": "frontend-i18n.copy",
         "key": "cmd+alt+c",
         "mac": "cmd+alt+c",
         "linux": "ctrl+alt+c",
@@ -73,95 +73,85 @@
       }
     ],
     "configuration": {
-      "title": "Copy Json Path",
+      "title": "Frontend I18n Plugin",
       "properties": {
-        "json.copyJsonPath.includeFileName": {
-          "type": "boolean",
-          "default": false,
-          "description": "Include the name of the json file at the beginning of the path"
-        },
-        "json.copyJsonPath.useBracketNotation": {
-          "type": "boolean",
-          "default": false,
-          "description": "Use bracket notation instead of dot notation"
-        },
-        "json.copyJsonPath.quote": {
-          "type": "string",
-          "default": "Double",
-          "enum": [
-            "Single",
-            "Double"
-          ],
-          "description": "Use single or double quote in bracket notation",
-          "enumDescriptions": [
-            "Use single quote",
-            "Use double quote"
-          ]
-        },
-        "json.copyJsonPath.outputTemplateDefault": {
-          "type": "string",
-          "default": "${PATH}",
-          "description": "默认复制方式的复制内容，${PATH}将被路径替换。可以在路径前后添加文本。"
-        },
-        "json.copyJsonPath.outputTemplate1": {
-          "type": "string",
-          "default": "${PATH}",
-          "description": "json路径复制 方式一 的复制内容，${PATH}将被路径替换。可以在路径前后添加文本。"
-        },
-        "json.copyJsonPath.outputTemplate2": {
-          "type": "string",
-          "default": "${PATH}",
-          "description": "json路径复制 方式二 的复制内容，${PATH}将被路径替换。可以在路径前后添加文本。"
-        },
-        "json.copyJsonPath.outputTemplate3": {
-          "type": "string",
-          "default": "${PATH}",
-          "description": "json路径复制 方式三 的复制内容，${PATH}将被路径替换。可以在路径前后添加文本。"
-        },
-        "json.copyJsonPath.i18nPrimaryPath": {
+        "frontend-i18n.i18nPrimaryPath": {
           "type": "string",
           "default": "",
-          "description": "国际化的json文件路径（优先级最高，先从这里找）"
+          "description": "【主要】国际化json文件路径（优先级最高，先从这里找）",
+          "order": 10
         },
-        "json.copyJsonPath.i18nSecondaryPath": {
+        "frontend-i18n.i18nSecondaryPath": {
           "type": "string",
           "default": "",
-          "description": "国际化的json文件路径（优先级次高，第一处没有后再在此处搜索）"
+          "description": "【次要】国际化json文件路径（主要文件未找到时搜索）",
+          "order": 11
         },
-        "json.copyJsonPath.format1Template": {
+        "frontend-i18n.i18nFallbackFilePath": {
           "type": "string",
-          "default": "t('${PATH}')",
-          "description": "选中内容替换为国际化路径(方式1)的内容，${PATH}将被路径替换。可以在路径前后添加文本。"
+          "default": "",
+          "description": "【新增】当需要新增国际化词条时，保存到此文件",
+          "order": 12
         },
-        "json.copyJsonPath.format2Template": {
+        "frontend-i18n.i18nFallbackPath": {
+          "type": "string",
+          "default": "",
+          "description": "【新增】新增词条在json文件中的路径（如：common.main）",
+          "order": 13
+        },
+        "frontend-i18n.outputTemplateDefault": {
+          "type": "string",
+          "default": "${PATH}",
+          "description": "【json文件复制默认模板】处于json文件中右键复制方式的模板，${PATH}将被替换为实际路径",
+          "order": 20
+        },
+        "frontend-i18n.outputTemplate1": {
+          "type": "string",
+          "default": "this.$t('${PATH}')",
+          "description": "【json文件复制模板1】处于json文件中右键复制方式的模板，${PATH}将被替换为实际路径",
+          "order": 21
+        },
+        "frontend-i18n.outputTemplate2": {
           "type": "string",
           "default": "{{t('${PATH}')}}",
-          "description": "选中内容替换为国际化路径(方式2)的内容，${PATH}将被路径替换。可以在路径前后添加文本。"
+          "description": "【json文件复制模板2】处于json文件中右键复制方式的模板，${PATH}将被替换为实际路径",
+          "order": 22
         },
-        "json.copyJsonPath.format3Template": {
+        "frontend-i18n.outputTemplate3": {
           "type": "string",
           "default": "$t('${PATH}')",
-          "description": "选中内容替换为国际化路径(方式3)的内容，${PATH}将被路径替换。可以在路径前后添加文本。"
+          "description": "【json文件复制模板3】处于json文件中右键复制方式的模板，${PATH}将被替换为实际路径",
+          "order": 23
         },
-        "json.copyJsonPath.i18nFallbackFilePath": {
+        "frontend-i18n.format1Template": {
+          "type": "string",
+          "default": "this.$t('${PATH}')",
+          "description": "【选词替换国际化的模板1】替换为国际化路径的模板，${PATH}将被替换为实际路径",
+          "order": 30
+        },
+        "frontend-i18n.format2Template": {
+          "type": "string",
+          "default": "{{t('${PATH}')}}",
+          "description": "【选词替换国际化的模板2】替换为国际化路径的模板，${PATH}将被替换为实际路径",
+          "order": 31
+        },
+        "frontend-i18n.format3Template": {
+          "type": "string",
+          "default": "$t('${PATH}')",
+          "description": "【选词替换国际化的模板3】替换为国际化路径的模板，${PATH}将被替换为实际路径",
+          "order": 32
+        },
+        "frontend-i18n.sparkApiPassword": {
           "type": "string",
           "default": "",
-          "description": "填入文件路径，当在上述两个文件中无法匹配时，在这个文件中添加翻译匹配词"
+          "description": "【AI】星火大模型的 API Password",
+          "order": 40
         },
-        "json.copyJsonPath.i18nFallbackPath": {
+        "frontend-i18n.sparkPrompt": {
           "type": "string",
-          "default": "",
-          "description": "文件添加匹配词路径，比如要是找不到，就在json文件common.main下新增对应的词"
-        },
-        "json.copyJsonPath.sparkApiPassword": {
-          "type": "string",
-          "default": "",
-          "description": "星火大模型的 API Password"
-        },
-        "json.copyJsonPath.sparkPrompt": {
-          "type": "string",
-          "default": "帮我进行变量命名\"${TEXT}\"，使用英译驼峰命名法，你的返回结果只需要给我驼峰命名法的变量名即可，不需要任何多余格式，要求变量名精简，见名知意。",
-          "description": "发送给星火大模型的提示词，${TEXT}将被替换为选中的文本"
+          "default": "帮我进行变量命名\"${TEXT}\"，使用英译小驼峰命名法，你的返回结果只需要给我驼峰命名法的变量名即可，不需要任何多余格式，要求变量名精简，见名知意。",
+          "description": "【AI】发送给星火大模型的提示词，${TEXT}将被替换为选中的文本",
+          "order": 41
         }
       }
     },
@@ -169,56 +159,56 @@
       "editor/context": [
         {
           "when": "resourceLangId == json",
-          "command": "copy-json-path.copy",
+          "command": "frontend-i18n.copy",
           "group": "copyPath"
         },
         {
           "when": "resourceLangId == jsonc",
-          "command": "copy-json-path.copy",
+          "command": "frontend-i18n.copy",
           "group": "copyPath"
         },
         {
           "when": "resourceLangId == json",
-          "command": "copy-json-path.copy-formatted-1",
+          "command": "frontend-i18n.copy-formatted-1",
           "group": "copyPath"
         },
         {
           "when": "resourceLangId == jsonc",
-          "command": "copy-json-path.copy-formatted-1",
+          "command": "frontend-i18n.copy-formatted-1",
           "group": "copyPath"
         },
         {
           "when": "resourceLangId == json",
-          "command": "copy-json-path.copy-formatted-2",
+          "command": "frontend-i18n.copy-formatted-2",
           "group": "copyPath"
         },
         {
           "when": "resourceLangId == jsonc",
-          "command": "copy-json-path.copy-formatted-2",
+          "command": "frontend-i18n.copy-formatted-2",
           "group": "copyPath"
         },
         {
           "when": "resourceLangId == json",
-          "command": "copy-json-path.copy-formatted-3",
+          "command": "frontend-i18n.copy-formatted-3",
           "group": "copyPath"
         },
         {
           "when": "resourceLangId == jsonc",
-          "command": "copy-json-path.copy-formatted-3",
+          "command": "frontend-i18n.copy-formatted-3",
           "group": "copyPath"
         },
         {
-          "command": "copy-json-path.replace-i18n-1",
+          "command": "frontend-i18n.replace-i18n-1",
           "group": "i18n@1",
           "when": "editorHasSelection"
         },
         {
-          "command": "copy-json-path.replace-i18n-2",
+          "command": "frontend-i18n.replace-i18n-2",
           "group": "i18n@2",
           "when": "editorHasSelection"
         },
         {
-          "command": "copy-json-path.replace-i18n-3",
+          "command": "frontend-i18n.replace-i18n-3",
           "group": "i18n@3",
           "when": "editorHasSelection"
         }

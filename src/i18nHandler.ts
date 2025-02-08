@@ -9,9 +9,9 @@ export class I18nHandler {
       const absolutePath = path.isAbsolute(filePath)
         ? filePath
         : path.join(
-          vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '',
-          filePath,
-        );
+            vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '',
+            filePath,
+          );
 
       if (!fs.existsSync(absolutePath)) {
         throw new Error(`找不到文件: ${absolutePath}`);
@@ -54,7 +54,7 @@ export class I18nHandler {
   private static async searchInFiles(
     searchText: string,
   ): Promise<string | null> {
-    const config = vscode.workspace.getConfiguration('json.copyJsonPath');
+    const config = vscode.workspace.getConfiguration('frontend-i18n');
     const primaryPath = config.get<string>('i18nPrimaryPath');
     const secondaryPath = config.get<string>('i18nSecondaryPath');
 
@@ -112,7 +112,7 @@ export class I18nHandler {
 
       // 创建实例来使用非静态方法
       const handler = new I18nHandler();
-      const config = vscode.workspace.getConfiguration('json.copyJsonPath');
+      const config = vscode.workspace.getConfiguration('frontend-i18n');
       const templateKey = `format${formatNumber}Template`;
       const template = config.get<string>(templateKey) || "t('${PATH}')";
 
@@ -139,7 +139,7 @@ export class I18nHandler {
   private async handleUnmatchedText(
     selectedText: string,
   ): Promise<string | undefined> {
-    const config = vscode.workspace.getConfiguration('json.copyJsonPath');
+    const config = vscode.workspace.getConfiguration('frontend-i18n');
     const fallbackFilePath = config.get<string>('i18nFallbackFilePath');
     const fallbackPath = config.get<string>('i18nFallbackPath');
 
@@ -172,7 +172,7 @@ export class I18nHandler {
       while (true) {
         const inputBox = vscode.window.createInputBox();
         inputBox.prompt = '请输入国际化key';
-        inputBox.placeholder = '例如: common.button.submit';
+        inputBox.placeholder = '例如: submit';
 
         // 添加两个按钮：AI生成和确认
         inputBox.buttons = [
@@ -199,7 +199,7 @@ export class I18nHandler {
             if (button.tooltip === '使用AI生成key') {
               try {
                 const config =
-                  vscode.workspace.getConfiguration('json.copyJsonPath');
+                  vscode.workspace.getConfiguration('frontend-i18n');
                 const apiPassword = config.get<string>('sparkApiPassword');
 
                 if (!apiPassword) {
