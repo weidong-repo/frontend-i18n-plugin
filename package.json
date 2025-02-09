@@ -1,7 +1,7 @@
 {
   "name": "frontend-i18n-plugin",
-  "publisher": "zhao",
-  "displayName": "前端国际化插件",
+  "publisher": "weidong-repo",
+  "displayName": "frontend-i18n-plugin-前端国际化插件",
   "description": "前端国际化辅助快捷插件-基于copy-json-path插件二开",
   "icon": "assets/logo.png",
   "repository": {
