@@ -7,7 +7,7 @@
   "repository": {
     "url": "https://github.com/weidong-repo/frontend-i18n-plugin"
   },
-  "version": "1.2.0",
+  "version": "1.2.1",
   "engines": {
     "vscode": "^1.58.0"
   },
